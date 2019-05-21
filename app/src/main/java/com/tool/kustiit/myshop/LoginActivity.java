@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText number , password;
+    public static EditText number , password;
     private Button loginBtn;
     private ProgressDialog loadingbar;
     
@@ -83,6 +83,7 @@ public class LoginActivity extends AppCompatActivity {
         auth.verifyPhoneNumber(number.getText().toString(), 60, TimeUnit.SECONDS, LoginActivity.this, new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
+                Users.Number = number.getText().toString();
                 FirebaseAuth.getInstance().signInWithCredential(phoneAuthCredential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {

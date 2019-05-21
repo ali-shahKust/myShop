@@ -40,7 +40,7 @@
         app:layout_constraintTop_toBottomOf="@+id/login_app_logo"
         app:layout_constraintVertical_bias="0.165"
         android:hint="Phone Number"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/black"
         android:paddingLeft="10dp"
         />
 
