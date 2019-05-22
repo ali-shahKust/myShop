@@ -4,20 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SettingsActivity"
-    android:theme="@style/Theme.AppCompat.NoActionBar"
-    >
+    tools:context=".SettingsActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar_setting"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:background="@color/colorPrimary"
         app:layout_constraintTop_toTopOf="parent">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar_setting"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            >
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -37,17 +38,18 @@
 
                 <TextView
                     android:id="@+id/updateTxt"
-                    android:layout_width="61dp"
-                    android:layout_height="28dp"
+                    android:layout_width="82dp"
+                    android:layout_height="match_parent"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginStart="258dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="242dp"
                     android:layout_marginTop="0dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="3dp"
+                    android:layout_marginBottom="0dp"
                     android:layout_toEndOf="@+id/closeTxt"
-                    android:text="Update"
-                    android:textColor="@android:color/white"
-                    android:textSize="16sp"
+                    android:text="@string/update"
+                    android:textColor="@android:color/white"                    android:textSize="16sp"
                     android:textStyle="bold" />
             </RelativeLayout>
 
@@ -98,6 +100,8 @@
         android:id="@+id/set_phoneNumber"
         android:background="@drawable/inputs"
         android:layout_marginTop="10dp"
+
+        android:textColor="@android:color/white"
         android:hint="@string/phone_number"
         android:paddingLeft="15dp"
         />
@@ -112,6 +116,8 @@
         android:id="@+id/set_Name"
         android:background="@drawable/inputs"
         android:layout_marginTop="10dp"
+
+        android:textColor="@android:color/white"
         android:paddingLeft="15dp"
         android:hint="@string/name"
         />
@@ -122,6 +128,8 @@
         app:layout_constraintRight_toLeftOf="parent"
         app:layout_constraintLeft_toRightOf="parent"
         android:id="@+id/set_Adress"
+
+        android:textColor="@android:color/white"
         android:background="@drawable/inputs"
         android:layout_marginTop="10dp"
         android:paddingLeft="15dp"
