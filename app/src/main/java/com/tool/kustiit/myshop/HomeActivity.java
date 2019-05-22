@@ -2,8 +2,12 @@ package com.tool.kustiit.myshop;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,12 +17,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
+import com.tool.kustiit.myshop.Model.Products;
 import com.tool.kustiit.myshop.Model.Users;
+import com.tool.kustiit.myshop.ViewHolder.ProductViewHolder;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.paperdb.Paper;
@@ -27,6 +39,9 @@ public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private FirebaseAuth mAuth;
+    private DatabaseReference mRootRef;
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -41,6 +56,7 @@ public class HomeActivity extends AppCompatActivity
 
         Paper.init(this);
 
+        mRootRef = FirebaseDatabase.getInstance().getReference().child("Products");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Home");
@@ -69,7 +85,14 @@ public class HomeActivity extends AppCompatActivity
         CircleImageView profileImgView = headerView.findViewById(R.id.userProfileImg);
 
         userNameTextView.setText(Users.Number);
+
+        recyclerView = findViewById(R.id.recyclermenu);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
     }
+
+
 
     @Override
     public void onBackPressed() {
@@ -118,6 +141,9 @@ public class HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_settings) {
 
+            Intent intent = new Intent(HomeActivity.this , SettingsActivity.class);
+            startActivity(intent);
+
         } else if (id == R.id.nav_logout) {
 
             Paper.book().destroy();
@@ -137,6 +163,37 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public void onStart() {
         super.onStart();
+
+        FirebaseRecyclerOptions<Products> options = new FirebaseRecyclerOptions.Builder<Products>().setQuery(
+                mRootRef , Products.class
+        ).build();
+        FirebaseRecyclerAdapter<Products , ProductViewHolder> adapter = new FirebaseRecyclerAdapter<Products, ProductViewHolder>(options) {
+            @Override
+            protected void onBindViewHolder(@NonNull ProductViewHolder holder, int position, @NonNull Products model) {
+
+                holder.productNametxt.setText(model.getProductName());
+                holder.ProductDescription.setText(model.getDescription());
+                holder.ProductPrice.setText("Price = " + model.getPrice() + " $");
+                Picasso.get().load(model.getImage()).into(holder.productImg);
+
+            }
+
+            @NonNull
+            @Override
+            public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+
+                View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.product_item_layout ,viewGroup , false);
+
+                ProductViewHolder holder = new ProductViewHolder(view);
+                return holder;
+
+            }
+        };
+
+        recyclerView.setAdapter(adapter);
+        adapter.startListening();
+
+
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser==null){

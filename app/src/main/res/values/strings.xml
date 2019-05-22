@@ -15,5 +15,9 @@
     <string name="UserName">User Name</string>
     <string name="product_name">Product Name</string>
     <string name="product_description">Product Description</string>
+    <string name="close">Close</string>
+    <string name="adress">Adress</string>
+    <string name="name">Name</string>
+    <string name="phone_number">Phone Number</string>
 
 </resources>
