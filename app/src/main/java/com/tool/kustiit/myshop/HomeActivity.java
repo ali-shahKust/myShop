@@ -25,8 +25,11 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.tool.kustiit.myshop.Model.Products;
 import com.tool.kustiit.myshop.Model.Users;
@@ -81,10 +84,61 @@ public class HomeActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         View headerView = navigationView.getHeaderView(0);
-        TextView userNameTextView = headerView.findViewById(R.id.userProfileName);
-        CircleImageView profileImgView = headerView.findViewById(R.id.userProfileImg);
+        final TextView userNameTextView = headerView.findViewById(R.id.userProfileName);
+        final CircleImageView profileImgView = headerView.findViewById(R.id.userProfileImg);
 
-        userNameTextView.setText(Users.Number);
+        final DatabaseReference RootRef;
+        RootRef = FirebaseDatabase.getInstance().getReference();
+
+        FirebaseUser current_user_id = mAuth.getCurrentUser();
+        final String uid=current_user_id.getUid();
+
+        final DatabaseReference ref=FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+
+                String username = dataSnapshot.child("user_number").getValue().toString();
+               // String phonenum = dataSnapshot.child("user_phone").getValue().toString();
+//                   String getimage = dataSnapshot.child("image").getValue().toString();
+                userNameTextView.setText(username);
+               // userPhoneNumber.setText(phonenum);
+
+                // Picasso.get().load(getimage).placeholder(R.drawable.profile).into(myImageview);
+
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        final DatabaseReference imgRef = FirebaseDatabase.getInstance().getReference().child("Profile_image").child(uid);
+        imgRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                try {
+                    String getimage = dataSnapshot.child("image").getValue().toString();
+                    Picasso.get().load(getimage).placeholder(R.drawable.profile).into(profileImgView);
+
+                }
+                catch (Exception err){
+                    err.getMessage();
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
 
         recyclerView = findViewById(R.id.recyclermenu);
         recyclerView.setHasFixedSize(true);
