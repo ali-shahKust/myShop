@@ -40,7 +40,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class SettingsActivity extends AppCompatActivity {
 
     private TextView changeImg, updateTxt;
-    private TextView phoneNumber;
+    private TextView phoneNumber , closeTxt;
     private CircleImageView dP;
     private static final int GallaryPick = 1;
 
@@ -71,9 +71,18 @@ public class SettingsActivity extends AppCompatActivity {
 
         phoneNumber = (TextView) findViewById(R.id.set_phoneNumber);
 
-
+        mprogressBar = new ProgressDialog(this);
         updateTxt = (TextView) findViewById(R.id.updateTxt);
+        closeTxt = (TextView)findViewById(R.id.closeTxt);
 
+        closeTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SettingsActivity.this , HomeActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         checkImage();
         dP.setOnClickListener(new View.OnClickListener() {
@@ -181,7 +190,10 @@ public class SettingsActivity extends AppCompatActivity {
 
 
 
-
+mprogressBar.setTitle("Uploading Image");
+mprogressBar.setMessage("Please wait ");
+mprogressBar.show();
+mprogressBar.setCanceledOnTouchOutside(false);
         //Image link for Product
         // ProductRandomKey = saveCurrentDate+saveCurrentTime;
         productImagesRef = FirebaseStorage.getInstance().getReference().child("Users").child("user_image");
@@ -227,6 +239,7 @@ public class SettingsActivity extends AppCompatActivity {
                             Toast.makeText(SettingsActivity.this, "Getting Url of Image", Toast.LENGTH_SHORT).show();
 
                             mRootRef.setValue(downloadImgUrl);
+                            mprogressBar.dismiss();
 
                             SaveProductInfo();
 
@@ -250,13 +263,9 @@ public class SettingsActivity extends AppCompatActivity {
 
                     Toast.makeText(SettingsActivity.this, "Image Upload Successfully", Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(SettingsActivity.this, HomeActivity.class);
-                    startActivity(intent);
-                    finish();
-
-                    // mprogressBar.dismiss();
+                     mprogressBar.dismiss();
                 } else {
-                    //mprogressBar.dismiss();
+                    mprogressBar.dismiss();
                     String message = task.getException().toString();
                     Toast.makeText(SettingsActivity.this, "Error " + message, Toast.LENGTH_SHORT).show();
                 }
