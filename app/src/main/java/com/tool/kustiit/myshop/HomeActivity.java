@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -20,6 +21,7 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -31,6 +33,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+import com.tool.kustiit.myshop.Interface.ItemClickListener;
 import com.tool.kustiit.myshop.Model.Products;
 import com.tool.kustiit.myshop.Model.Users;
 import com.tool.kustiit.myshop.ViewHolder.ProductViewHolder;
@@ -223,12 +226,25 @@ public class HomeActivity extends AppCompatActivity
         ).build();
         FirebaseRecyclerAdapter<Products , ProductViewHolder> adapter = new FirebaseRecyclerAdapter<Products, ProductViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull ProductViewHolder holder, int position, @NonNull Products model) {
+            protected void onBindViewHolder(@NonNull final ProductViewHolder holder, int position, @NonNull final Products model) {
 
                 holder.productNametxt.setText(model.getProductName());
                 holder.ProductDescription.setText(model.getDescription());
                 holder.ProductPrice.setText("Price = " + model.getPrice() + " $");
                 Picasso.get().load(model.getImage()).into(holder.productImg);
+
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent  = new Intent(HomeActivity.this , ProductDetailActivity.class);
+                        intent.putExtra("pid" , model.getPid());
+                        System.err.println("Product Id is " + model.getPid());
+                        Log.d("test", "Clicked");
+                        startActivity(intent);
+                    }
+
+
+                });
 
             }
 
