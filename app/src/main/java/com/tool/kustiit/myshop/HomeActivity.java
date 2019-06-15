@@ -48,6 +48,7 @@ public class HomeActivity extends AppCompatActivity
     private DatabaseReference mRootRef;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
+    private FirebaseUser mUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -90,14 +91,27 @@ public class HomeActivity extends AppCompatActivity
         final TextView userNameTextView = headerView.findViewById(R.id.userProfileName);
         final CircleImageView profileImgView = headerView.findViewById(R.id.userProfileImg);
 
-        final DatabaseReference RootRef;
-        RootRef = FirebaseDatabase.getInstance().getReference();
+//        final DatabaseReference RootRef;
+//        RootRef = FirebaseDatabase.getInstance().getReference();
 
-        FirebaseUser current_user_id = mAuth.getCurrentUser();
-        final String uid=current_user_id.getUid();
 
-        final DatabaseReference ref=FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
-        ref.addValueEventListener(new ValueEventListener() {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        String userId = null;
+        if (currentUser != null) {
+            userId = currentUser.getUid();
+        }
+        if(currentUser==null){
+            Intent intent = new Intent(HomeActivity.this , LoginActivity.class);
+            startActivity(intent);
+            finish();
+
+        };
+
+
+try{
+        final DatabaseReference ref=FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -119,7 +133,7 @@ public class HomeActivity extends AppCompatActivity
 
             }
         });
-        final DatabaseReference imgRef = FirebaseDatabase.getInstance().getReference().child("Profile_image").child(uid);
+        final DatabaseReference imgRef = FirebaseDatabase.getInstance().getReference().child("Profile_image").child(userId);
         imgRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -147,6 +161,10 @@ public class HomeActivity extends AppCompatActivity
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+    }
+catch (Exception e){
+
+}
     }
 
 
@@ -265,11 +283,5 @@ public class HomeActivity extends AppCompatActivity
 
 
         // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser==null){
-            Intent intent = new Intent(HomeActivity.this , LoginActivity.class);
-            startActivity(intent);
-            finish();
-
-        };}
+        }
 }

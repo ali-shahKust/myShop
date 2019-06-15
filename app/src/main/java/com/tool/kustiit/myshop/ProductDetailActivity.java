@@ -79,7 +79,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
 
                     name.setText(products.getProductName());
-                    price.setText(products.getPrice()+ "$");
+                    price.setText(products.getPrice());
                     description.setText(products.getDescription());
 
                     Picasso.get().load(products.getImage()).into(productImgDetail);
