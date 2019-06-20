@@ -10,13 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorPrimaryDark"
+        android:padding="10dp"
         >
 
 
 <TextView
     android:layout_width="160dp"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="15dp"
+    android:layout_marginLeft="10dp"
     android:text="Product Name"
     android:id="@+id/product"
 
@@ -26,12 +27,22 @@
         <TextView
             android:layout_width="160dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/product"
             android:text="Product Quantity"
             android:id="@+id/quantity"
             android:textColor="@android:color/white"
             android:textStyle="bold"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Product Price"
+            android:id="@+id/proudct_cart_price"
+            android:layout_below="@+id/quantity"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:gravity="center"
             />
     </RelativeLayout>
 
