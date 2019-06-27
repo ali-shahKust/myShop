@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ConfirmFinalOrder">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="@string/please_confirm_your_shipment_detail"
+        android:textColor="@android:color/black"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.486"
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintRight_toLeftOf="parent"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="parent"
+        android:background="@drawable/inputs"
+        app:layout_constraintVertical_bias="0.922"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:id="@+id/shipmentName"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintRight_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="parent"
+        android:background="@drawable/inputs"
+        android:layout_margin="20dp"
+        android:hint="Your Name"
+        android:padding="10dp"
+
+        app:layout_constraintVertical_bias="0.787" />
+
+    <EditText
+        android:id="@+id/shipNumber"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_margin="20dp"
+        android:background="@drawable/inputs"
+        android:hint="Your Number"
+        android:padding="10dp"
+        app:layout_constraintBottom_toTopOf="@id/shipmentName"
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintRight_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="parent"
+
+        app:layout_constraintVertical_bias="0.82" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_margin="20dp"
+        android:background="@drawable/inputs"
+        android:hint="Your Adress"
+        android:padding="10dp"
+        android:id="@+id/shipAdress"
+        app:layout_constraintBottom_toTopOf="@id/shipNumber"
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintRight_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="parent"
+
+        app:layout_constraintVertical_bias="0.807" />
+
+    <EditText
+        android:id="@+id/shipCity"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_margin="20dp"
+        android:background="@drawable/inputs"
+        android:hint="Your City"
+        android:padding="10dp"
+        app:layout_constraintBottom_toTopOf="@id/shipAdress"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintRight_toLeftOf="parent"
+
+        app:layout_constraintTop_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.777" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button"
+        android:layout_margin="100dp"
+        android:text="Confirm"
+        android:textAllCaps="false"
+        android:id="@+id/ConfirmShipBtn"
+        app:layout_constraintBottom_toTopOf="@id/shipAdress"
+        app:layout_constraintLeft_toRightOf="parent"
+        app:layout_constraintRight_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="parent"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

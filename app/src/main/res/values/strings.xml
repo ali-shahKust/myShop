@@ -20,5 +20,6 @@
     <string name="name">Name</string>
     <string name="phone_number">Phone Number</string>
     <string name="update">Update</string>
+    <string name="please_confirm_your_shipment_detail">Please Confirm Your Shipment Detail</string>
 
 </resources>
