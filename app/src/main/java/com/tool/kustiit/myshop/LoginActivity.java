@@ -33,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginBtn;
     private ProgressDialog loadingbar;
     private FirebaseUser mUser;
+
     
 
     @Override

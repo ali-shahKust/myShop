@@ -36,6 +36,7 @@ public class Cart extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
 
+    private  int ProducttotalPrice = 0 ;
     private FirebaseUser mUser;
 
     @Override
@@ -58,6 +59,20 @@ public class Cart extends AppCompatActivity {
 
         layoutManager = new LinearLayoutManager(this);
         myView.setLayoutManager(layoutManager);
+
+
+        nextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                totalPrice.setText(String.valueOf(ProducttotalPrice));
+
+                Intent intent = new Intent(Cart.this , ConfirmFinalOrder.class);
+                intent.putExtra("Total Price", String.valueOf(ProducttotalPrice));
+
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     @Override
@@ -83,10 +98,12 @@ public class Cart extends AppCompatActivity {
                     protected void onBindViewHolder(@NonNull CartViewHolder holder, int position, @NonNull final Carts model) {
 
                         holder.productQuantity.setText("Quantity = " +model.getQuantity());
-                        holder.productPrice.setText("Per Product Price = "+model.getPrice());
+                        holder.productPrice.setText("Price = "+model.getPrice());
                         holder.productName.setText(model.getpName());
 
+                        int perProductTotalPrice = (Integer.valueOf(model.getPrice())) * Integer.valueOf(model.getQuantity());
 
+                        ProducttotalPrice = ProducttotalPrice + perProductTotalPrice;
                         holder.itemView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
