@@ -37,9 +37,10 @@ public class ProductDetailActivity extends AppCompatActivity {
     private TextView price , description , name ;
     private FirebaseAuth mAuth;
     private Button addtoCartbtn;
+    private FirebaseUser mUser;
 
 
-    private  String ProductID = "";
+    private  String ProductID = "" , state = "Normal";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +54,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         );
 
         mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
 
         addtoCartbtn = (Button)findViewById(R.id.addToCart);
 
@@ -75,7 +77,12 @@ public class ProductDetailActivity extends AppCompatActivity {
         addtoCartbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AddToCartList();
+
+                if (state.equals("Order Shipped") || state.equals("Order Placed")){
+                    Toast.makeText(ProductDetailActivity.this, "You Can Purchase Order Once You Receive Your Last Order", Toast.LENGTH_LONG).show();
+                }else{
+                    AddToCartList();
+                }
             }
         });
 
@@ -127,6 +134,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
                                 Intent intent = new Intent (ProductDetailActivity.this , HomeActivity.class);
                                 startActivity(intent);
+                                finish();
                             }
                         }
                     });
@@ -135,6 +143,12 @@ public class ProductDetailActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        CheckState();
     }
 
     private void getProductDetails(String productID) {
@@ -165,6 +179,36 @@ public class ProductDetailActivity extends AppCompatActivity {
                 }
 
 
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+    private void CheckState(){
+
+        mUser = mAuth.getCurrentUser();
+
+        final String uID = mUser.getUid();
+        DatabaseReference orderRef =
+                FirebaseDatabase.getInstance().getReference().child("Orders").child(uID);
+        orderRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    String order_state = dataSnapshot.child("order_state").getValue().toString();
+
+
+                    if (order_state.equals("Shipped")){
+
+                            state = "Order Shiped";
+                    }
+                    else if (order_state.equals("Not Shipped")){
+                        state = "Order Placed";
+                    }
+                }
             }
 
             @Override

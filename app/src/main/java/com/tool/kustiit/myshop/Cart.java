@@ -22,14 +22,17 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.tool.kustiit.myshop.Model.Carts;
 import com.tool.kustiit.myshop.ViewHolder.CartViewHolder;
 
 public class Cart extends AppCompatActivity {
 
-    private TextView totalPrice;
+    private TextView totalPrice , txtmsg1;
     private RecyclerView myView;
     private RecyclerView.LayoutManager layoutManager;
     private Button nextBtn;
@@ -51,7 +54,7 @@ public class Cart extends AppCompatActivity {
 
 
         totalPrice = (TextView)findViewById(R.id.totalPrice);
-
+        txtmsg1 = (TextView)findViewById(R.id.msg1);
         myView = (RecyclerView) findViewById(R.id.myCartList);
         myView.setHasFixedSize(true);
 
@@ -78,6 +81,7 @@ public class Cart extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        CheckState();
 
         mUser = mAuth.getCurrentUser();
 
@@ -165,5 +169,49 @@ public class Cart extends AppCompatActivity {
 
         myView.setAdapter(adapter);
         adapter.startListening();
+    }
+
+    private void CheckState(){
+
+        mUser = mAuth.getCurrentUser();
+
+        final String uID = mUser.getUid();
+        DatabaseReference orderRef =
+                FirebaseDatabase.getInstance().getReference().child("Orders").child(uID);
+        orderRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    String order_state = dataSnapshot.child("order_state").getValue().toString();
+
+                    String name = dataSnapshot.child("user_name").getValue().toString();
+                    if (order_state.equals("Shipped")){
+
+                        totalPrice.setText("Shipped ");
+                        myView.setVisibility(View.GONE);
+                        txtmsg1.setVisibility(View.VISIBLE);
+                        txtmsg1.setText("Congratulation Your Final Order Has Been Shipped.");
+                        nextBtn.setVisibility(View.GONE);
+
+                        Toast.makeText(Cart.this, "Please Give us A Feedback When you Receive Your Product", Toast.LENGTH_SHORT).show();
+
+                    }
+                    else if (order_state.equals("Not Shipped")){
+                        totalPrice.setText("Not Shipped");
+                        myView.setVisibility(View.GONE);
+                        txtmsg1.setVisibility(View.VISIBLE);
+                        nextBtn.setVisibility(View.GONE);
+
+                        Toast.makeText(Cart.this, "You Can Purchase More Order Once You receive the Last Order You Purchase", Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }

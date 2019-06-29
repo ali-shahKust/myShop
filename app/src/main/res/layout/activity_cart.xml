@@ -35,6 +35,18 @@
 
     </RelativeLayout>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:id="@+id/msg1"
+        android:layout_centerVertical="true"
+        android:text="Your Order Placed Successfully. Soon you will receive Order At your Door step."
+        android:textSize="28sp"
+        android:textAlignment="center"
+        android:visibility="gone"
+        />
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
