@@ -86,6 +86,10 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
         });
 
+    } @Override
+    protected void onStart() {
+        super.onStart();
+        CheckState();
     }
 
     private void AddToCartList() {
@@ -145,11 +149,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        CheckState();
-    }
+
 
     private void getProductDetails(String productID) {
 
@@ -203,7 +203,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
                     if (order_state.equals("Shipped")){
 
-                            state = "Order Shiped";
+                            state = "Order Shipped";
                     }
                     else if (order_state.equals("Not Shipped")){
                         state = "Order Placed";
