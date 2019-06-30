@@ -86,7 +86,7 @@ try {
             Calendar calendar = Calendar.getInstance();
             SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd, yyyy");
             SaveCurrentDate = currentDate.format(calendar.getTime());
-            SimpleDateFormat currentTime = new SimpleDateFormat("MMM dd, yyyy");
+            SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:ss a");
             SaveCurrentTime = currentTime.format(calendar.getTime());
 
 
